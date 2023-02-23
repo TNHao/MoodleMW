@@ -2,6 +2,7 @@ package utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import common.Constant;
 import common.MoodleFunctions;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -27,11 +28,12 @@ public class HttpUtils {
 	private static String TOKEN;
 
 	// secret here
-	private static final String MOODLE_USERNAME = "haotn";
-	private static final String MOODLE_PASSWORD = "123456aB.";
-	private static final String MOODLE_SERVICE_NAME = "";
-	private static final String MOODLE_HOST = "https://moodle-110012-0.cloudclusters.net/%s";
-	private static final String TOKEN_API = "login/token.php?username=%s&password=%s&service=%s";
+	private static final String MOODLE_USERNAME = "admin";
+	private static final String MOODLE_PASSWORD = "94S8qBR4";
+	private static final String MOODLE_SERVICE_NAME = "moodle_mobile_app";
+
+	private static final String fileURLFormat = "%s?token=%s";
+
 
 	private static final Logger LOGGER;
 	private static final CloseableHttpClient httpClient;
@@ -49,8 +51,8 @@ public class HttpUtils {
 	}
 
 	private static boolean _getAccessToken() {
-		String apiPath = String.format(TOKEN_API, MOODLE_USERNAME, MOODLE_PASSWORD, MOODLE_SERVICE_NAME);
-		String url = String.format(MOODLE_HOST, apiPath);
+		String apiPath = String.format(Constant.TOKEN_API, MOODLE_USERNAME, MOODLE_PASSWORD, MOODLE_SERVICE_NAME);
+		String url = Constant.MOODLE_HOST + apiPath;
 
 		String data = httpGet(url);
 		JsonObject dataObject = gson.fromJson(data, JsonObject.class);
@@ -91,6 +93,9 @@ public class HttpUtils {
 		}
 	}
 
+	public static String buildFileUrl(String path) {
+		return String.format(fileURLFormat, path);
+	}
 
 	public static void main(String[] args) {
 
