@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import model.MoodleModel;
 import utils.FileUtils;
+import utils.HttpUtils;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -33,7 +34,7 @@ public class MoodleCrontab {
 		if (submissions != null) {
 			for (JsonObject submission : submissions) {
 				String fileurl = getFileFromSubmission(submission);
-				FileUtils.downloadFileFromUrl(fileurl, "/home/lap15454/Desktop/file.zip");
+				FileUtils.downloadFileFromUrl(fileurl, HttpUtils.getToken(), "/home/lap15454/Desktop/file.zip");
 			}
 		}
 	}

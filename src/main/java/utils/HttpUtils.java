@@ -93,12 +93,16 @@ public class HttpUtils {
 		}
 	}
 
-	public static String buildFileUrl(String path) {
-		return String.format(fileURLFormat, path);
+	public static String buildFileUrl(String path, String token) {
+		return String.format(fileURLFormat, path, token);
 	}
 
 	public static void main(String[] args) {
 
 //		INSTANCE._getAccessToken();
+	}
+
+	public static String getToken(){
+		return TOKEN;
 	}
 }

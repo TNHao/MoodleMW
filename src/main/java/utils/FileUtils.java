@@ -9,10 +9,10 @@ import java.util.zip.ZipInputStream;
 
 public class FileUtils {
 
-	public static void downloadFileFromUrl(String urlStr, String path) {
+	public static void downloadFileFromUrl(String urlStr, String token, String path) {
 		URL url = null;
 		try {
-			url = new URL(HttpUtils.buildFileUrl(urlStr));
+			url = new URL(HttpUtils.buildFileUrl(urlStr, token));
 			BufferedInputStream bis = new BufferedInputStream(url.openStream());
 			FileOutputStream fis = new FileOutputStream(path);
 			byte[] buffer = new byte[1024];
@@ -81,8 +81,9 @@ public class FileUtils {
 	}
 
 	public static void main(String[] args) {
-		String url = "https://moodle-112112-0.cloudclusters.net/webservice/pluginfile.php/36/assignsubmission_file/submission_files/2/jar_files%20%282%29.zip?token=d62dbf06c63992c474664fa38a645699";
+		String url = "https://moodle-112112-0.cloudclusters.net/webservice/pluginfile.php/36/assignsubmission_file/submission_files/2/jar_files%20%282%29.zip";
+		String token  = "d62dbf06c63992c474664fa38a645699";
 
-		downloadFileFromUrl(url, "/home/lap15454/Desktop/file.zip");
+		downloadFileFromUrl(url, token, "/home/lap15454/Desktop/file.zip");
 	}
 }
