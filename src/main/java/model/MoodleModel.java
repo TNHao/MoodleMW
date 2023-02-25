@@ -91,6 +91,7 @@ public class MoodleModel {
 
 		String result = HttpUtils.httpGet(Constant.CORE_API, params, MoodleFunctions.ASSIGNMENT_SUBMISSIONS);
 		JsonObject detail = JsonUtils.toObject(result);
+		System.out.println(detail);
 
 		if (Objects.isNull(detail)){
 			LOGGER.error("[Can not get submissions] - assignmentId: " + assignmentId);

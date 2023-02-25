@@ -9,32 +9,44 @@ import java.util.zip.ZipInputStream;
 
 public class FileUtils {
 
-	public static void downloadFileFromUrl(String urlStr, String token, String path) {
+	public static void downloadFileFromUrl(String urlStr, String token, String filePath) {
 		URL url = null;
 		try {
 			url = new URL(HttpUtils.buildFileUrl(urlStr, token));
+
+			System.out.println("Downloaded from URL: "+urlStr+" to path: "+filePath);
 			BufferedInputStream bis = new BufferedInputStream(url.openStream());
-			FileOutputStream fis = new FileOutputStream(path);
+			FileOutputStream fis = new FileOutputStream(filePath);
 			byte[] buffer = new byte[1024];
+			int totalWrite=0;
 			int count = 0;
 			while ((count = bis.read(buffer, 0, 1024)) != -1) {
+				totalWrite+=count;
+				System.out.println("Downloaded: "+totalWrite);
 				fis.write(buffer, 0, count);
+
+
 			}
 			fis.close();
 			bis.close();
+			System.out.println("Done download to "+filePath);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static boolean extractArchiveFile(String zipPath, String desPath) {
+	//ensure fileURL contains url of specific file
+
+	public static String extractArchiveFile(String zipPath, String desPath) {
 		File destDir = new File(desPath);
 		byte[] buffer = new byte[1024];
+		String filePath="";
 		try {
 			ZipInputStream zis = new ZipInputStream(new FileInputStream(zipPath));
 			ZipEntry zipEntry = zis.getNextEntry();
 			while (zipEntry != null) {
 				File newFile = newFile(destDir, zipEntry);
+				filePath= newFile.getAbsolutePath();
 				System.out.println("Extracting " + zipEntry.getName() + "...");
 				if (zipEntry.isDirectory()) {
 					if (!newFile.isDirectory() && !newFile.mkdirs()) {
@@ -61,11 +73,11 @@ public class FileUtils {
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
-			return false;
+			return "";
 
 		}
 
-		return true;
+		return filePath;
 	}
 
 	public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {

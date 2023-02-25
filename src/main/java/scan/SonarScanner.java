@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 
 public class SonarScanner {
     public static boolean scanProject(String projectPath,String projectKey,String token)  {
+        projectKey="API";
+        token="439841a5cc19b0f477bb761bc7b02e2c5acd54a8";
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe", "/c", "e: && cd "+projectPath+" && sonar-scanner.bat -D\"sonar.projectKey=" +projectKey+
                 "\" -D\"sonar.sources=.\" -D\"sonar.host.url=http://localhost:9000\" -D\"sonar.login=" + token + "\"");
