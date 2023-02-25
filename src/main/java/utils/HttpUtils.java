@@ -5,10 +5,12 @@ import com.google.gson.JsonObject;
 import common.Constant;
 import common.MoodleFunctions;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
@@ -88,6 +90,43 @@ public class HttpUtils {
 
 			return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
 		} catch (Exception ex) {
+			LOGGER.error(ex.getMessage(), ex);
+			return null;
+		}
+	}
+
+	// Use for sonarqube
+	public static String httpGet(String urlPath, List<NameValuePair> params){
+		if (Objects.isNull(params)) {
+			params = new ArrayList<>();
+		}
+		try {
+			ClassicHttpRequest req = new HttpGet(urlPath);
+			String encoding = Base64.getEncoder().encodeToString((Constant.USERNAME + ":" + Constant.PASSWORD).getBytes());
+			req.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encoding);
+
+			req.setUri(new URIBuilder(req.getUri()).addParameters(params).build());
+			CloseableHttpResponse response = httpClient.execute(req);
+
+			return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+
+		}catch (Exception ex){
+			LOGGER.error(ex.getMessage(), ex);
+			return null;
+		}
+	}
+	public static String httpPost(String urlPath, List<NameValuePair> params){
+		try {
+			ClassicHttpRequest req = new HttpPost(urlPath);
+			String encoding = Base64.getEncoder().encodeToString((Constant.USERNAME + ":" + Constant.PASSWORD).getBytes());
+			req.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encoding);
+
+			req.setUri(new URIBuilder(req.getUri()).addParameters(params).build());
+			CloseableHttpResponse response = httpClient.execute(req);
+
+			return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+
+		}catch (Exception ex){
 			LOGGER.error(ex.getMessage(), ex);
 			return null;
 		}
